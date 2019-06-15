@@ -1,0 +1,17 @@
+{
+	"files": {
+		"README.md": "bcd84495d10e10cf31f8ba6780416243530267874917697bb2f1b782088dca7b",
+		"index.js": "6f5e5d6868d6a62f5d76c3e39bc33a62952709f1ad68a04afe172ac5a4916be2",
+		"module.json": "ed003376acf3807b44a08b852397cc948e65574aaec9f9b891c2585fd35edc97",
+		"settings_migrator.js": "f97c5a0de378cdb754a0eede1ad14176d6cd6fc28013b6bc48063a6a80e48ec1"
+	},
+	"defs": {
+		"S_ACTION_END": 5,
+		"S_ACTION_STAGE": 9,
+		"S_CREATURE_LIFE": 3,
+		"S_LEAVE_PARTY": "raw",
+		"S_LEAVE_PARTY_MEMBER": 2,
+		"S_PARTY_MEMBER_LIST": 7,
+		"S_USER_LOCATION": 5
+	}
+}
