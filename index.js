@@ -34,7 +34,7 @@ module.exports = function Instant_revive(mod) {
 			if(!alive)
 			{
 				isDead[gameId] = true;
-				moveBody(gameId, loc); // doesn't help at all I think
+				setTimeout(moveBody, 299, gameId, loc); // not sure if helps at all
 				if(mod.settings.drama)
 				{
 					setTimeout(fakeDeath, 300, gameId, loc, 0);
