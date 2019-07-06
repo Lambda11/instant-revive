@@ -8,7 +8,7 @@ Also works on your party members! So you can lock onto them as Priest and use pu
 # Commands  
 - !`irevive` to toggle module (DEFAULT: ON)  
 - !`irevive party` to toggle party functions which are useful if you are a Priest (DEFAULT: OFF)  
-- !`irevive drama` to toggle drama when dying (DEFAULT: OFF) (might increase the probabily of dead body being in the wrong place for ressurection visually on your screen)   
+- !`irevive drama` to toggle drama when dying (DEFAULT: OFF) (during dying (first 5 sec) animation dead body might be slightly in the wrong place for ressurection visually on your screen)   
 
 # Notes
 

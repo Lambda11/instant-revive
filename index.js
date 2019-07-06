@@ -13,11 +13,6 @@ module.exports = function Instant_revive(mod) {
 		party() {
 			mod.settings.party = !mod.settings.party;
 			command.message(`for Party: ${mod.settings.party ? 'En' : 'Dis'}abled`);
-			if (!mod.settings.party)
-			{
-				partyMembers.length = 0;
-				command.message(`If you enable it again later while you are in a party - you will need to rejoin your party after that for this to work again`);
-			}
 		},
 		drama() {
 			mod.settings.drama = !mod.settings.drama;
@@ -28,13 +23,13 @@ module.exports = function Instant_revive(mod) {
 	mod.hook('S_CREATURE_LIFE', 3, {order: 9999}, ({gameId, alive, loc})=>{
 		if(mod.settings.enabled)
 		{
-			const member = partyMembers.find((memb) => memb.gameId === gameId);
+			const member = mod.settings.party ? (partyMembers.find((memb) => memb.gameId === gameId)) : null;
 			if (!member && gameId !== mod.game.me.gameId) return;
 			
 			if(!alive)
 			{
 				isDead[gameId] = true;
-				setTimeout(moveBody, 299, gameId, loc); // not sure if helps at all
+				if(gameId === mod.game.me.gameId) { setTimeout(clearMyBuffs, 280);} // fix for bugged CC skills?
 				if(mod.settings.drama)
 				{
 					setTimeout(fakeDeath, 300, gameId, loc, 0);
@@ -42,7 +37,10 @@ module.exports = function Instant_revive(mod) {
 				}
 				else
 				{
-					setTimeout(fakeDeath, 300, gameId, loc, 1);
+					fakeDeath(gameId, loc, 1);
+					setTimeout(fakeDeath, 300, gameId, loc, 1); // in case player was moving\using skills during death
+					setTimeout(fakeDeath, 2000, gameId, loc, 1);
+					setTimeout(fakeDeath, 4000, gameId, loc, 1);
 				}
 				return false; // we wont't have to waste time reviving if we don't die
 			}
@@ -55,8 +53,6 @@ module.exports = function Instant_revive(mod) {
 	});
 	
 	mod.hook('S_PARTY_MEMBER_LIST', 7, ({members}) => {
-		if (!mod.settings.party) return;
-		
 		partyMembers = members;
 	});
 	
@@ -93,6 +89,13 @@ module.exports = function Instant_revive(mod) {
 					huntingZoneId: 0,
 					id: 70300
 				}});
+			if(Stage === 1)
+			{
+				mod.toClient('S_INSTANT_MOVE', 3, {
+					gameId: Id,
+					loc: Loc
+				});
+			}
 		}
 	}
 	
@@ -113,14 +116,17 @@ module.exports = function Instant_revive(mod) {
 			}});
 	}
 	
-	function moveBody(Id, Loc)
+	function clearMyBuffs()
 	{
-		mod.send('S_USER_LOCATION', 5, {	
-			gameId: Id,
-			loc: Loc,
-			speed: 250,
-			dest: Loc,
-			type: 7
-		});
+		if(mod.game.me.abnormalities && isDead[mod.game.me.gameId])
+		{
+			Object.values(mod.game.me.abnormalities).forEach(abnormality => {
+				mod.toClient('S_ABNORMALITY_END', 1, {
+					target: mod.game.me.gameId,
+					id: abnormality.id
+				});
+				command.message("Cleared abnormality " + abnormality.id)
+			});
+		}
 	}
 }
