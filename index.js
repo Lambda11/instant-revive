@@ -52,7 +52,7 @@ module.exports = function Instant_revive(mod) {
 		}
 	});
 	
-	mod.hook('S_PARTY_MEMBER_LIST', 7, ({members}) => {
+	mod.hook('S_PARTY_MEMBER_LIST', 9, ({members}) => {
 		partyMembers = members;
 	});
 	
